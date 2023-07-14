@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:pretest_km_suitmedia/screens/second_page.dart';
 
 class ThirdPage extends StatefulWidget {
+  static const routeName = '/third-page';
+
   const ThirdPage({super.key});
 
   @override
@@ -27,6 +29,7 @@ class _ThirdPageState extends State<ThirdPage> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -71,16 +74,22 @@ class _ThirdPageState extends State<ThirdPage> {
               final responseData = snapshot.data!;
               final List<dynamic> itemList = responseData['data'];
 
-              return GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: ListView.builder(
-                  itemCount: itemList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final item = itemList[index];
+              return ListView.builder(
+                itemCount: itemList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final item = itemList[index];
 
-                    return Container(
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                          context, SecondPage.routeName,
+                          arguments: {
+                            'username': args['username'],
+                            'selectedUsername':
+                                '${item['first_name']} ${item['last_name']}'
+                          });
+                    },
+                    child: Container(
                       padding: EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(
                         border: Border(
@@ -99,9 +108,9 @@ class _ThirdPageState extends State<ThirdPage> {
                             style: GoogleFonts.poppins(
                                 fontSize: 12, fontWeight: FontWeight.w400)),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               );
             }
           },

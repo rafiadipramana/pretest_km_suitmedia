@@ -4,12 +4,13 @@ import 'package:pretest_km_suitmedia/constant/color.dart';
 import 'package:pretest_km_suitmedia/screens/third_page.dart';
 
 class SecondPage extends StatelessWidget {
-  String userName = "";
+  static const routeName = '/second-page';
 
-  SecondPage({super.key, required this.userName});
+  SecondPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -56,7 +57,7 @@ class SecondPage extends StatelessWidget {
                         fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    userName != '' ? userName : "John Doe",
+                    args["username"] != '' ? args["username"] : "John Doe",
                     style: GoogleFonts.poppins(
                         fontSize: 18, fontWeight: FontWeight.w600),
                   ),
@@ -64,7 +65,9 @@ class SecondPage extends StatelessWidget {
               ),
             ),
             Text(
-              'Selected User Name',
+              (args["selectedUsername"] != null)
+                  ? args["selectedUsername"].toString()
+                  : 'Selected Username',
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                   fontSize: 24, fontWeight: FontWeight.w700),
@@ -81,8 +84,8 @@ class SecondPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ThirdPage()));
+                    Navigator.pushNamed(context, ThirdPage.routeName,
+                        arguments: {'username': args['username']});
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),

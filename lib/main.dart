@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pretest_km_suitmedia/constant/color.dart';
 import 'package:pretest_km_suitmedia/screens/second_page.dart';
+import 'package:pretest_km_suitmedia/screens/third_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      routes: {
+        '/': (context) => MyHomePage(),
+        SecondPage.routeName: (context) => SecondPage(),
+        ThirdPage.routeName: (context) => ThirdPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
@@ -219,11 +224,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SecondPage(
-                                          userName: _usernameController.text)));
+                              Navigator.pushNamed(context, SecondPage.routeName,
+                                  arguments: {
+                                    'username': _usernameController.text
+                                  });
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12),
